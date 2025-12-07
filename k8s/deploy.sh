@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# ===========================================
+# Deploy to Kubernetes
+# ===========================================
+
+set -e
+
+echo "🚀 Deploying microservices to Kubernetes..."
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Create namespace
+echo "📁 Creating namespace..."
+kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
+
+# Create ConfigMap
+echo "⚙️  Creating ConfigMap..."
+kubectl apply -f "$SCRIPT_DIR/configmap.yaml"
+
+# Deploy backend services first
+echo "🔧 Deploying user-service..."
+kubectl apply -f "$SCRIPT_DIR/user-service/"
+
+echo "🔧 Deploying product-service..."
+kubectl apply -f "$SCRIPT_DIR/product-service/"
+
+echo "🔧 Deploying order-service..."
+kubectl apply -f "$SCRIPT_DIR/order-service/"
+
+echo "🔧 Deploying notification-service..."
+kubectl apply -f "$SCRIPT_DIR/notification-service/"
+
+# Wait for backend services to be ready
+echo "⏳ Waiting for backend services to be ready..."
+kubectl wait --for=condition=available --timeout=120s deployment/user-service -n microservices || true
+kubectl wait --for=condition=available --timeout=120s deployment/product-service -n microservices || true
+kubectl wait --for=condition=available --timeout=120s deployment/order-service -n microservices || true
+kubectl wait --for=condition=available --timeout=120s deployment/notification-service -n microservices || true
+
+# Deploy API Gateway
+echo "🌐 Deploying api-gateway..."
+kubectl apply -f "$SCRIPT_DIR/api-gateway/"
+
+echo ""
+echo "✅ Deployment complete!"
+echo ""
+echo "📊 Checking pod status..."
+kubectl get pods -n microservices
+
+echo ""
+echo "🔗 Services:"
+kubectl get svc -n microservices
+
+echo ""
+echo "🌍 Access the API Gateway at:"
+echo "   - Docker Desktop K8s: http://localhost:30000"
+echo "   - Minikube: Run 'minikube service api-gateway -n microservices'"

@@ -617,6 +617,12 @@ docker tag notification-service:latest YOUR_REGISTRY/notification-service:v1.0.0
 
 ---
 
+## Kubernetes Deployment
+
+ดูคู่มือการ deploy บน Kubernetes ได้ที่ [k8s/README.md](./k8s/README.md)
+
+---
+
 ## License
 
 UNLICENSED
