@@ -19,7 +19,16 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 echo "⚙️  Creating ConfigMap..."
 kubectl apply -f "$SCRIPT_DIR/configmap.yaml"
 
-# Deploy backend services first
+# Deploy RabbitMQ first (message broker)
+echo "🐰 Deploying RabbitMQ..."
+kubectl apply -f "$SCRIPT_DIR/rabbitmq/"
+
+# Wait for RabbitMQ to be ready
+echo "⏳ Waiting for RabbitMQ to be ready..."
+kubectl wait --for=condition=available --timeout=120s deployment/rabbitmq -n microservices || true
+sleep 5  # Extra wait for RabbitMQ to fully initialize
+
+# Deploy backend services
 echo "🔧 Deploying user-service..."
 kubectl apply -f "$SCRIPT_DIR/user-service/"
 
@@ -57,3 +66,6 @@ echo ""
 echo "🌍 Access the API Gateway at:"
 echo "   - Docker Desktop K8s: http://localhost:30000"
 echo "   - Minikube: Run 'minikube service api-gateway -n microservices'"
+echo ""
+echo "🐰 RabbitMQ Management UI:"
+echo "   - http://localhost:31672 (admin/password)"

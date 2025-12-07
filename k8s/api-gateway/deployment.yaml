@@ -67,6 +67,11 @@ spec:
                 configMapKeyRef:
                   name: microservices-config
                   key: NOTIFICATION_SERVICE_PORT
+            - name: RABBITMQ_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: microservices-config
+                  key: RABBITMQ_URL
           resources:
             requests:
               memory: '128Mi'

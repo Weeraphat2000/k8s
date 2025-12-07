@@ -36,10 +36,15 @@ import { AppService } from './app.service';
       },
       {
         name: 'NOTIFICATION_SERVICE',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          host: process.env.NOTIFICATION_SERVICE_HOST ?? '127.0.0.1',
-          port: parseInt(process.env.NOTIFICATION_SERVICE_PORT ?? '3004'),
+          urls: [
+            process.env.RABBITMQ_URL || 'amqp://admin:password@rabbitmq:5672',
+          ],
+          queue: 'notification_queue',
+          queueOptions: {
+            durable: true,
+          },
         },
       },
     ]),

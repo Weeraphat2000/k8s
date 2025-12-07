@@ -8,10 +8,11 @@ interface Item {
 @Injectable()
 export class NotificationServiceService {
   private items: Item[] = [];
+  private podName = process.env.HOSTNAME || 'unknown';
 
   ping(): string {
-    console.log('hellowwwwwwwww');
-    return 'pong';
+    console.log(`[${this.podName}] Received ping request`);
+    return `pong from ${this.podName}`;
   }
 
   getItems() {

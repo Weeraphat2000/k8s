@@ -1,5 +1,5 @@
 {
-  "name": "new-service",
+  "name": "notification-service",
   "version": "1.0.0",
   "scripts": {
     "build": "nest build",
@@ -11,6 +11,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/microservices": "^11.0.0",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
