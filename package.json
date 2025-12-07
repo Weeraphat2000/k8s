@@ -1,27 +1,43 @@
 {
   "name": "k8s",
   "version": "0.0.1",
-  "description": "",
+  "description": "Microservices with API Gateway, User, Product, and Order Services",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "build:all": "pnpm build:api-gateway && pnpm build:user-service && pnpm build:product-service && pnpm build:order-service",
+    "build:api-gateway": "nest build api-gateway",
+    "build:user-service": "nest build user-service",
+    "build:product-service": "nest build product-service",
+    "build:order-service": "nest build order-service",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "start:prod": "node dist/apps/api-gateway/main",
+    "start:api-gateway": "nest start api-gateway",
+    "start:api-gateway:dev": "nest start api-gateway --watch",
+    "start:user-service": "nest start user-service",
+    "start:user-service:dev": "nest start user-service --watch",
+    "start:product-service": "nest start product-service",
+    "start:product-service:dev": "nest start product-service --watch",
+    "start:order-service": "nest start order-service",
+    "start:order-service:dev": "nest start order-service --watch",
+    "start:all": "concurrently \"pnpm start:user-service\" \"pnpm start:product-service\" \"pnpm start:order-service\" \"pnpm start:api-gateway\"",
+    "start:all:dev": "concurrently \"pnpm start:user-service:dev\" \"pnpm start:product-service:dev\" \"pnpm start:order-service:dev\" \"pnpm start:api-gateway:dev\"",
+    "lint": "eslint \"{apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/k8s/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/microservices": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
@@ -36,6 +52,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
+    "concurrently": "^9.1.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -57,7 +74,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -65,7 +82,10 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/apps/"
+    ]
   }
 }
