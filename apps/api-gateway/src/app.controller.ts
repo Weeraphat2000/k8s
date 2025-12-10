@@ -7,11 +7,13 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    console.log('get hello');
     return this.appService.getHello();
   }
 
   @Get('health')
   healthCheck() {
+    console.log('call health');
     return { status: 'ok', service: 'api-gateway' };
   }
 }

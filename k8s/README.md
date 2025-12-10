@@ -11,6 +11,39 @@
 - Self-healing (restart containers ที่ล้ม)
 - Rolling updates โดยไม่มี downtime
 
+## Ingress NGINX (Reverse Proxy สำหรับ K8s)
+
+### วิธีเช็คว่า Ingress NGINX ติดตั้งแล้วหรือยัง
+
+```bash
+kubectl get pods -n ingress-nginx
+```
+
+ถ้าเห็น pod เช่น `ingress-nginx-controller-xxxx` แปลว่าติดตั้งแล้ว
+
+### วิธีติดตั้ง Ingress NGINX
+
+#### Docker Desktop (Kubernetes)
+
+1. เปิด Kubernetes ใน Preferences (Settings → Kubernetes → Enable Kubernetes)
+2. ถ้าไม่มี Ingress NGINX ให้ติดตั้งด้วย:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.4/deploy/static/provider/cloud/deploy.yaml
+```
+
+3. รอให้ pod ใน namespace `ingress-nginx` ขึ้น Running
+
+#### Minikube
+
+1. เปิด Ingress addon:
+
+```bash
+minikube addons enable ingress
+```
+
+2. รอให้ pod ใน namespace `ingress-nginx` ขึ้น Running
+
 ---
 
 ## 🔄 Request Flow: จาก User ถึง Pod

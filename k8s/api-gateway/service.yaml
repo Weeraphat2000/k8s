@@ -13,4 +13,21 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30000 # สามารถเข้าถึงได้ที่ port 30000
+      nodePort: 30000
+
+# # for use ingress change NodePort to ClusterIP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: api-gateway
+#   namespace: microservices
+#   labels:
+#     app: api-gateway
+# spec:
+#   type: ClusterIP # ใช้ ClusterIP เพื่อให้ Ingress เข้าถึง
+#   selector:
+#     app: api-gateway
+#   ports:
+#     - protocol: TCP
+#       port: 30000
+#       targetPort: 3000

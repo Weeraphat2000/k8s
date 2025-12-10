@@ -52,6 +52,10 @@ kubectl wait --for=condition=available --timeout=120s deployment/notification-se
 echo "🌐 Deploying api-gateway..."
 kubectl apply -f "$SCRIPT_DIR/api-gateway/"
 
+# # Deploy Ingress
+# echo "🌐 Deploying Ingress..."
+# kubectl apply -f "$SCRIPT_DIR/ingress.yaml"
+
 echo ""
 echo "✅ Deployment complete!"
 echo ""
@@ -62,8 +66,12 @@ echo ""
 echo "🔗 Services:"
 kubectl get svc -n microservices
 
+# echo ""
+# echo "🌍 Access the API Gateway via Ingress:"
+# echo "   - http://localhost/ (Docker Desktop K8s with NGINX Ingress)"
+# echo "   - Or use your configured Ingress Controller hostname"
 echo ""
-echo "🌍 Access the API Gateway at:"
+echo "🌍 Access the API Gateway (NodePort) at:"
 echo "   - Docker Desktop K8s: http://localhost:30000"
 echo "   - Minikube: Run 'minikube service api-gateway -n microservices'"
 echo ""

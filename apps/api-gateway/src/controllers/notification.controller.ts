@@ -10,6 +10,7 @@ export class NotificationController {
 
   @Get()
   async getNotifications(): Promise<any> {
+    console.log('notifications');
     return firstValueFrom(this.notificationService.send({ cmd: 'ping' }, {}));
   }
 }
