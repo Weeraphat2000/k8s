@@ -26,5 +26,8 @@ data:
   # RabbitMQ Configuration
   RABBITMQ_URL: 'amqp://admin:password@rabbitmq:5672'
 
+  # MongoDB Configuration
+  MONGODB_URI: 'mongodb://mongo-service/nest'
+
   # Common Configuration
   HOST: '0.0.0.0'

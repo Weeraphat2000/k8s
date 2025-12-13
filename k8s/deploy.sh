@@ -28,6 +28,10 @@ echo "⏳ Waiting for RabbitMQ to be ready..."
 kubectl wait --for=condition=available --timeout=120s deployment/rabbitmq -n microservices || true
 sleep 5  # Extra wait for RabbitMQ to fully initialize
 
+# Deploy MongoDB
+echo "🍃 Deploying MongoDB..."
+kubectl apply -f "$SCRIPT_DIR/mongo-service/"
+
 # Deploy backend services
 echo "🔧 Deploying user-service..."
 kubectl apply -f "$SCRIPT_DIR/user-service/"

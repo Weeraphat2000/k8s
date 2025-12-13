@@ -6,9 +6,16 @@ import { OrderController } from './controllers/order.controller';
 import { NotificationController } from './controllers/notification.controller';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Order, OrderSchema } from './model/order.schema';
 
 @Module({
   imports: [
+    MongooseModule.forRoot(
+      process.env.MONGODB_URI || 'mongodb://localhost/nest',
+    ),
+    MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
+
     ClientsModule.register([
       {
         name: 'USER_SERVICE',
