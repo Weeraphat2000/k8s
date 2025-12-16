@@ -72,11 +72,13 @@ spec:
                 configMapKeyRef:
                   name: microservices-config
                   key: RABBITMQ_URL
+            # - name: MONGODB_URI
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: microservices-config
+            #       key: MONGODB_URI
             - name: MONGODB_URI
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: MONGODB_URI
+              value: 'mongodb://mongo-service/nest'
           resources:
             requests:
               memory: '128Mi'
