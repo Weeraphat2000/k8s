@@ -1,0 +1,37 @@
+# helm create my-app # สร้างโครงสร้าง Chart พื้นฐาน
+# kubectl create namespace microservices
+
+# cd เข้ามาให้เจอไฟล์ Chart.yaml ก่อน
+# helm install my . -n microservices --create-namespace
+# helm upgrade my-microservices . --install เพื่อติดตั้งหรืออัปเกรด Chart
+# helm uninstall my-microservices เพื่อลบ Chart ออก
+# helm uninstall my-microservices -n <namespace> เพื่อลบ Chart ออก จาก namespace ที่ระบุ
+# helm list -A     # เพื่อตรวจสอบว่ามีการติดตั้ง Chart เรียบร้อยแล้ว ทุก namespace
+# helm status my-microservices # ดูสถานะของ release
+# helm history my-microservices # ดูประวัติการติดตั้ง
+# helm rollback my-microservices 1 # ย้อนกลับไปยังรีวิชันที่ 1
+
+apiVersion: v2
+name: my-microservices
+description: A Helm chart for Kubernetes
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.1.0
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
+appVersion: '1.16.0'

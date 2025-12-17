@@ -1,0 +1,185 @@
+# ===============================
+# GLOBAL CONFIG (ใช้ร่วมทุก service)
+# ===============================
+
+# namespace ที่จะ deploy (ถ้าไม่ใช้ --namespace)
+namespace: microservices
+
+# imagePullSecrets (กรณีใช้ private registry)
+imagePullSecrets: []
+# imagePullSecrets:
+#   - name: regcred
+
+# ===============================
+# API GATEWAY SERVICE
+# ===============================
+apiGateway:
+  # เปิด / ปิดการ deploy service นี้
+  enabled: true
+
+  # จำนวน pod
+  replicaCount: 2
+
+  # Docker image
+  image:
+    repository: api-gateway
+    tag: 'latest'
+    pullPolicy: Never # ใช้ image จาก local
+
+  # Port ที่ container expose
+  containerPort: 3000
+
+  # Kubernetes Service config
+  service:
+    type: NodePort # ใช้ NodePort สำหรับ local development
+    port: 3000 # port ที่ service เปิด
+    targetPort: 3000
+    nodePort: 30000 # กำหนด nodePort แบบคงที่
+
+  # Environment variables
+  env:
+    PORT: 3000
+    USER_SERVICE_HOST: 'user-service'
+    USER_SERVICE_PORT: 3001
+    PRODUCT_SERVICE_HOST: 'product-service'
+    PRODUCT_SERVICE_PORT: 3002
+    ORDER_SERVICE_HOST: 'order-service'
+    ORDER_SERVICE_PORT: 3003
+    NOTIFICATION_SERVICE_HOST: 'notification-service'
+    NOTIFICATION_SERVICE_PORT: 3004
+    RABBITMQ_URL: 'amqp://admin:password@rabbitmq:5672'
+    MONGODB_URI: 'mongodb://mongo-service/nest'
+
+  # ConfigMap (key-value ธรรมดา)
+  config:
+    API_GATEWAY_PORT: 3000
+
+  # Resource limit / request
+  resources:
+    requests:
+      cpu: '100m'
+      memory: '128Mi'
+    limits:
+      cpu: '200m'
+      memory: '256Mi'
+
+  # Liveness / Readiness probe
+  probes:
+    liveness:
+      path: /
+      initialDelaySeconds: 20
+      periodSeconds: 10
+    readiness:
+      path: /
+      initialDelaySeconds: 10
+      periodSeconds: 5
+
+  # Ingress (ถ้าใช้)
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: api.localhost
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Autoscaling (HPA)
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+
+# ===============================
+# USER SERVICE
+# ===============================
+userService:
+  # เปิด / ปิดการ deploy service นี้
+  enabled: true
+  # จำนวน pod
+  replicaCount: 2
+
+  # Docker image
+  image:
+    repository: user-service
+    tag: 'latest'
+    pullPolicy: Never # ใช้ image จาก local
+  # Port ที่ container expose
+  containerPort: 3001
+  # Kubernetes Service config
+  service:
+    type: ClusterIP
+    port: 3001
+    targetPort: 3001
+  # Environment variables
+  env:
+    PORT: 3001
+    HOST: '0.0.0.0'
+  # ConfigMap (key-value ธรรมดา)
+  config:
+    USER_SERVICE_PORT: 3001
+    HOST: '0.0.0.0'
+  # Resource limit / request
+  resources:
+    requests:
+      cpu: '100m'
+      memory: '128Mi'
+    limits:
+      cpu: '200m'
+      memory: '256Mi'
+
+# ===============================
+# PRODUCT SERVICE
+# ===============================
+
+productService:
+  # เปิด / ปิดการ deploy service นี้
+  enabled: false
+
+# ===============================
+# ORDER SERVICE
+# ===============================
+orderService:
+  # เปิด / ปิดการ deploy service นี้
+  enabled: false
+
+# ===============================
+# NOTIFICATION SERVICE
+# ===============================
+notificationService:
+  # เปิด / ปิดการ deploy service นี้
+  enabled: true
+  # จำนวน pod
+  replicaCount: 1
+
+  # Docker image
+  image:
+    repository: notification-service
+    tag: 'latest'
+    pullPolicy: Never # ใช้ image จาก local
+  # Port ที่ container expose
+  containerPort: 3004
+  # Kubernetes Service config
+  service:
+    type: ClusterIP
+    port: 3004
+    targetPort: 3004
+  # Environment variables
+  env:
+    PORT: 3004
+    HOST: '0.0.0.0'
+    RABBITMQ_URL: 'amqp://admin:password@rabbitmq:5672'
+  # ConfigMap (key-value ธรรมดา)
+  config:
+    NOTIFICATION_SERVICE_PORT: 3004
+    HOST: '0.0.0.0'
+    RABBITMQ_URL: 'amqp://admin:password@rabbitmq:5672'
+  # Resource limit / request
+  resources:
+    requests:
+      cpu: '100m'
+      memory: '128Mi'
+    limits:
+      cpu: '200m'
+      memory: '256Mi'

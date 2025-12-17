@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: api-gateway
+spec:
+  replicas: {{ .Values.apiGateway.replicaCount }}
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: {{ .Values.apiGateway.image.repository }}:{{ .Values.apiGateway.image.tag }}
+          imagePullPolicy: {{ .Values.apiGateway.image.pullPolicy }} # ใช้ image จาก local
+          ports:
+            - containerPort: {{ .Values.apiGateway.containerPort }}
+          env:
+            - name: PORT
+              value: {{ .Values.apiGateway.env.PORT | quote }}
+            - name: USER_SERVICE_HOST
+              value: {{ .Values.apiGateway.env.USER_SERVICE_HOST | quote }}
+            - name: USER_SERVICE_PORT
+              value: {{ .Values.apiGateway.env.USER_SERVICE_PORT | quote }}
+            - name: PRODUCT_SERVICE_HOST
+              value: {{ .Values.apiGateway.env.PRODUCT_SERVICE_HOST | quote }}
+            - name: PRODUCT_SERVICE_PORT
+              value: {{ .Values.apiGateway.env.PRODUCT_SERVICE_PORT | quote }}
+            - name: ORDER_SERVICE_HOST
+              value: {{ .Values.apiGateway.env.ORDER_SERVICE_HOST | quote }}
+            - name: ORDER_SERVICE_PORT
+              value: {{ .Values.apiGateway.env.ORDER_SERVICE_PORT | quote }}
+            - name: NOTIFICATION_SERVICE_HOST
+              value: {{ .Values.apiGateway.env.NOTIFICATION_SERVICE_HOST | quote }}
+            - name: NOTIFICATION_SERVICE_PORT
+              value: {{ .Values.apiGateway.env.NOTIFICATION_SERVICE_PORT | quote }}
+            - name: RABBITMQ_URL
+              value: {{ .Values.apiGateway.env.RABBITMQ_URL | quote }}
+            # - name: MONGODB_URI
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: microservices-config
+            #       key: MONGODB_URI
+            - name: MONGODB_URI
+              value: {{ .Values.apiGateway.env.MONGODB_URI | quote }}
+          resources:
+            requests:
+              memory: {{ .Values.apiGateway.resources.requests.memory }}
+              cpu: {{ .Values.apiGateway.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.apiGateway.resources.limits.memory }}
+              cpu: {{ .Values.apiGateway.resources.limits.cpu }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.apiGateway.probes.readiness.path }}
+              port: {{ .Values.apiGateway.containerPort }}
+            initialDelaySeconds: {{ .Values.apiGateway.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.apiGateway.probes.readiness.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.apiGateway.probes.liveness.path }}
+              port: {{ .Values.apiGateway.containerPort }}
+            initialDelaySeconds: {{ .Values.apiGateway.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.apiGateway.probes.liveness.periodSeconds }}
