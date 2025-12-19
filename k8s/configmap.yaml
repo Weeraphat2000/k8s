@@ -7,6 +7,8 @@ data:
   # API Gateway Configuration
   PORT: '3000'
 
+  test: 'hello world'
+
   # User Service Configuration
   USER_SERVICE_HOST: 'user-service'
   USER_SERVICE_PORT: '3001'
