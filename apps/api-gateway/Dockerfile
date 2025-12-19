@@ -1,5 +1,7 @@
 FROM node:20-alpine AS builder
 
+# RUN apk add --no-cache bash
+
 WORKDIR /app
 
 # Install pnpm with specific version
@@ -21,7 +23,11 @@ RUN pnpm build
 RUN pnpm prune --prod
 
 # Production stage - use distroless for minimal attack surface
-FROM gcr.io/distroless/nodejs20-debian12
+# for production ถ้าใช้จริงควรใช้บรรทัดล่างนี้ (ไม่มี shell)
+# FROM gcr.io/distroless/nodejs20-debian12 AS production 
+
+# for development and testing (มี shell)
+FROM node:20-alpine AS production 
 
 WORKDIR /app
 

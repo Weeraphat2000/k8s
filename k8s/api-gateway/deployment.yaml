@@ -98,3 +98,17 @@ spec:
               port: 3000
             initialDelaySeconds: 15
             periodSeconds: 10
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app/mount1/mount2 # โฟลเดอร์ใน pod
+            - name: app-volume2
+              mountPath: /app/mount3 # โฟลเดอร์ใน pod
+      volumes:
+        - name: app-volume
+          hostPath:
+            path: /Users/weeraphatyian/Desktop/k8s/mount # โฟลเดอร์บนโฮสต์
+            type: Directory # จะไม่สร้างโฟลเดอร์ใหม่ถ้าไม่มี และจะ error
+        - name: app-volume2
+          hostPath:
+            path: /Users/weeraphatyian/Desktop/k8s/mount2 # โฟลเดอร์บนโฮสต์
+            type: DirectoryOrCreate # จะสร้างโฟลเดอร์ใหม่ถ้าไม่มี
