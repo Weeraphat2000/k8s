@@ -21,9 +21,11 @@ spec:
           imagePullPolicy: Never # ใช้ image จาก local
           ports:
             - containerPort: 3000
+          # จะใช้ envFrom เพื่อดึง environment variables ทั้งหมดจาก ConfigMap
           envFrom:
             - configMapRef:
                 name: microservices-config
+          # ถ้าอยากกำหนด env ทีละตัวแทนการใช้ envFrom ให้ใช้โค้ดด้านล่างนี้แทน
           # env:
           #   - name: PORT
           #     valueFrom:
