@@ -19,6 +19,9 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 echo "⚙️  Creating ConfigMap..."
 kubectl apply -f "$SCRIPT_DIR/configmap.yaml"
 
+# Create ConfigMap from .env file
+# kubectl create configmap microservices-config --from-env-file=.env -n microservices
+
 # Deploy RabbitMQ first (message broker)
 echo "🐰 Deploying RabbitMQ..."
 kubectl apply -f "$SCRIPT_DIR/rabbitmq/"

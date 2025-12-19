@@ -25,6 +25,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: microservices-config
+            - secretRef:
+                name: microservices-secret
           # ถ้าอยากกำหนด env ทีละตัวแทนการใช้ envFrom ให้ใช้โค้ดด้านล่างนี้แทน
           # env:
           #   - name: PORT

@@ -21,34 +21,12 @@ spec:
           imagePullPolicy: {{ .Values.apiGateway.image.pullPolicy }} # ใช้ image จาก local
           ports:
             - containerPort: {{ .Values.apiGateway.containerPort }}
-          env:
-            - name: PORT
-              value: {{ .Values.apiGateway.env.PORT | quote }}
-            - name: USER_SERVICE_HOST
-              value: {{ .Values.apiGateway.env.USER_SERVICE_HOST | quote }}
-            - name: USER_SERVICE_PORT
-              value: {{ .Values.apiGateway.env.USER_SERVICE_PORT | quote }}
-            - name: PRODUCT_SERVICE_HOST
-              value: {{ .Values.apiGateway.env.PRODUCT_SERVICE_HOST | quote }}
-            - name: PRODUCT_SERVICE_PORT
-              value: {{ .Values.apiGateway.env.PRODUCT_SERVICE_PORT | quote }}
-            - name: ORDER_SERVICE_HOST
-              value: {{ .Values.apiGateway.env.ORDER_SERVICE_HOST | quote }}
-            - name: ORDER_SERVICE_PORT
-              value: {{ .Values.apiGateway.env.ORDER_SERVICE_PORT | quote }}
-            - name: NOTIFICATION_SERVICE_HOST
-              value: {{ .Values.apiGateway.env.NOTIFICATION_SERVICE_HOST | quote }}
-            - name: NOTIFICATION_SERVICE_PORT
-              value: {{ .Values.apiGateway.env.NOTIFICATION_SERVICE_PORT | quote }}
-            - name: RABBITMQ_URL
-              value: {{ .Values.apiGateway.env.RABBITMQ_URL | quote }}
-            # - name: MONGODB_URI
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: microservices-config
-            #       key: MONGODB_URI
-            - name: MONGODB_URI
-              value: {{ .Values.apiGateway.env.MONGODB_URI | quote }}
+          # จะใช้ envFrom เพื่อดึง environment variables ทั้งหมดจาก ConfigMap
+          envFrom:
+            - configMapRef:
+                name: microservices-config
+            - secretRef:
+                name: microservices-secret
           resources:
             requests:
               memory: {{ .Values.apiGateway.resources.requests.memory }}
@@ -68,3 +46,17 @@ spec:
               port: {{ .Values.apiGateway.containerPort }}
             initialDelaySeconds: {{ .Values.apiGateway.probes.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.apiGateway.probes.liveness.periodSeconds }}
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app/mount1/mount2 # โฟลเดอร์ใน pod
+            - name: app-volume2
+              mountPath: /app/mount3 # โฟลเดอร์ใน pod
+      volumes:
+        - name: app-volume
+          hostPath:
+            path: /Users/weeraphatyian/Desktop/k8s/mount # โฟลเดอร์บนโฮสต์
+            type: Directory # จะไม่สร้างโฟลเดอร์ใหม่ถ้าไม่มี และจะ error
+        - name: app-volume2
+          hostPath:
+            path: /Users/weeraphatyian/Desktop/k8s/mount2 # โฟลเดอร์บนโฮสต์
+            type: DirectoryOrCreate # จะสร้างโฟลเดอร์ใหม่ถ้าไม่มี
