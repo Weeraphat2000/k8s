@@ -52,7 +52,7 @@ apiGateway:
 
   # ConfigMap (key-value ธรรมดา)
   config:
-    API_GATEWAY_PORT: 3000
+    PORT: 3000
 
   # Resource limit / request
   resources:

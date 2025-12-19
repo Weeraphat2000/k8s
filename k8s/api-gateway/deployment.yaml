@@ -21,64 +21,67 @@ spec:
           imagePullPolicy: Never # ใช้ image จาก local
           ports:
             - containerPort: 3000
-          env:
-            - name: PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: API_GATEWAY_PORT
-            - name: USER_SERVICE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: USER_SERVICE_HOST
-            - name: USER_SERVICE_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: USER_SERVICE_PORT
-            - name: PRODUCT_SERVICE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: PRODUCT_SERVICE_HOST
-            - name: PRODUCT_SERVICE_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: PRODUCT_SERVICE_PORT
-            - name: ORDER_SERVICE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: ORDER_SERVICE_HOST
-            - name: ORDER_SERVICE_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: ORDER_SERVICE_PORT
-            - name: NOTIFICATION_SERVICE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: NOTIFICATION_SERVICE_HOST
-            - name: NOTIFICATION_SERVICE_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: NOTIFICATION_SERVICE_PORT
-            - name: RABBITMQ_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-config
-                  key: RABBITMQ_URL
-            # - name: MONGODB_URI
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: microservices-config
-            #       key: MONGODB_URI
-            - name: MONGODB_URI
-              value: 'mongodb://mongo-service/nest'
+          envFrom:
+            - configMapRef:
+                name: microservices-config
+          # env:
+          #   - name: PORT
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: PORT
+          #   - name: USER_SERVICE_HOST
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: USER_SERVICE_HOST
+          #   - name: USER_SERVICE_PORT
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: USER_SERVICE_PORT
+          #   - name: PRODUCT_SERVICE_HOST
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: PRODUCT_SERVICE_HOST
+          #   - name: PRODUCT_SERVICE_PORT
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: PRODUCT_SERVICE_PORT
+          #   - name: ORDER_SERVICE_HOST
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: ORDER_SERVICE_HOST
+          #   - name: ORDER_SERVICE_PORT
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: ORDER_SERVICE_PORT
+          #   - name: NOTIFICATION_SERVICE_HOST
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: NOTIFICATION_SERVICE_HOST
+          #   - name: NOTIFICATION_SERVICE_PORT
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: NOTIFICATION_SERVICE_PORT
+          #   - name: RABBITMQ_URL
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: microservices-config
+          #         key: RABBITMQ_URL
+          #   # - name: MONGODB_URI
+          #   #   valueFrom:
+          #   #     configMapKeyRef:
+          #   #       name: microservices-config
+          #   #       key: MONGODB_URI
+          #   - name: MONGODB_URI
+          #     value: 'mongodb://mongo-service/nest'
           resources:
             requests:
               memory: '128Mi'

@@ -5,7 +5,7 @@ metadata:
   namespace: microservices
 data:
   # API Gateway Configuration
-  API_GATEWAY_PORT: '3000'
+  PORT: '3000'
 
   # User Service Configuration
   USER_SERVICE_HOST: 'user-service'
