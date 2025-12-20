@@ -34,10 +34,10 @@ helm list -A
 helm status <release-name>
 
 # Show the history of a release
-helm history <release-name>
+helm history <release-name> -n <namespace>
 
 # Rollback to a previous revision
-helm rollback <release-name> <revision>
+helm rollback <release-name> <revision> -n <namespace>
 ```
 
 ---
