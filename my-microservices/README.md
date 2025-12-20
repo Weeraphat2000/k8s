@@ -16,10 +16,10 @@ helm create <chart-structure>
 kubectl create namespace <namespace>
 
 # Install the chart into a namespace (creates namespace if it doesn't exist)
-helm install <release-name> . -n <namespace> --create-namespace
+helm install <release-name> <location-chart.yaml> -n <namespace> --create-namespace
 
 # Install or upgrade the chart
-helm upgrade <release-name> . --install
+helm upgrade <release-name> <location-chart.yaml> -n <namespace> --install
 
 # Uninstall the chart
 helm uninstall <release-name>
@@ -57,7 +57,7 @@ kubectl create namespace microservices
 helm install my-microservices . -n microservices --create-namespace
 
 # Install or upgrade the chart
-helm upgrade my-microservices . --install
+helm upgrade my-microservices . -n microservices --install
 
 # Uninstall the chart
 helm uninstall my-microservices
