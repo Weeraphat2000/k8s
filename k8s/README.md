@@ -605,6 +605,111 @@ k8s/
 
 ## Troubleshooting
 
+## 🛠️ Useful kubectl CLI Commands
+
+### Update ConfigMap from .env file
+
+```bash
+kubectl create cm microservices-config --from-env-file=.env -n microservices --dry-run=client -o yaml | kubectl apply -f -
+```
+
+### Create ConfigMap from .env file
+
+```bash
+kubectl create configmap microservices-config --from-env-file=.env -n microservices
+```
+
+### Get ConfigMaps
+
+```bash
+kubectl get configmap -n microservices
+kubectl get cm -n microservices
+```
+
+### Get value configMap
+
+```bash
+kubectl get configmap -n microservices microservices-config -o yaml
+kubectl get cm -n microservices microservices-config -o yaml
+```
+
+### Describe ConfigMap
+
+```bash
+kubectl describe configmap microservices-config -n microservices
+```
+
+### Edit ConfigMap
+
+```bash
+kubectl edit configmap microservices-config -n microservices
+```
+
+### Delete ConfigMap
+
+```bash
+kubectl delete configmap microservices-config -n microservices
+```
+
+### Get Deployments
+
+```bash
+kubectl get deployments -n microservices
+kubectl get deploy -n microservices
+```
+
+### Get value Deployments
+
+```bash
+kubectl get deployments api-gateway -n microservices -o yaml
+kubectl get deploy api-gateway -n microservices -o yaml
+```
+
+### Describe Deployment
+
+```bash
+kubectl describe deployment api-gateway -n microservices
+```
+
+### Edit Deployment
+
+```bash
+kubectl edit deployment api-gateway -n microservices
+```
+
+### Delete Deployment
+
+```bash
+kubectl delete deployment api-gateway -n microservices
+```
+
+### Other Useful kubectl Commands
+
+```bash
+# Get all resources in namespace
+kubectl get all -n microservices
+
+# Get pods, services, hpa, etc.
+kubectl get pods -n microservices
+kubectl get svc -n microservices
+kubectl get hpa -n microservices
+
+# Edit any resource
+kubectl edit <resource> <name> -n microservices
+
+# Delete any resource
+kubectl delete <resource> <name> -n microservices
+
+# Apply yaml file
+kubectl apply -f <file>.yaml -n microservices
+
+# View logs
+kubectl logs <pod-name> -n microservices
+
+# Exec into pod
+kubectl exec -it <pod-name> -n microservices -- sh
+```
+
 ### ImagePullBackOff Error
 
 ถ้าเจอ error นี้ แสดงว่า K8s หา image ไม่เจอ:
